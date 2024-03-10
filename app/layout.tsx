@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import MainNav from '@/components/MainNav'
-import { ThemeProvider } from '@/components/them-provider'
+import { ThemeProvider } from '@/components/Theme-provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,7 +25,7 @@ export default function RootLayout({
             <MainNav />
           </div>
         </nav>
-        
+
         <main className="flex flex-col items-center"><div className='max-w-6xl w-full'>{children}</div></main>
         </ThemeProvider>
         </body>
