@@ -5,11 +5,13 @@ import Link from 'next/link';
 import {buttonVariants} from '@/components/ui/button';
 import Pagination from "@/components/Pagination";
 import StatusFilter from "@/components/StatusFilter";
-import {Status} from "@prisma/client";
+import {Status, Ticket} from "@prisma/client";
 
-interface SearchParams {
+export interface SearchParams {
     status: Status;
     page: string
+    orderBy: keyof Ticket,
+    sortOrder : string
 }
 
 const Tickets = async ({searchParams}: { searchParams: SearchParams }) => {
@@ -29,11 +31,17 @@ const Tickets = async ({searchParams}: { searchParams: SearchParams }) => {
             NOT: [{status: "CLOSED" as Status}]
         }
     }
-    const ticketCount = await prisma.ticket.count({where});
 
+    let orderBy ;
+    if (searchParams.orderBy) {
+        orderBy = JSON.parse(`{ "${searchParams.orderBy}" : "${searchParams.sortOrder || "asc"}"}`)
+    }
+
+    const ticketCount = await prisma.ticket.count({where});
 
     const tickets = await prisma.ticket.findMany({
         where,
+        orderBy,
         take: pageSize,
         skip: (page - 1) * pageSize
     });
@@ -44,7 +52,7 @@ const Tickets = async ({searchParams}: { searchParams: SearchParams }) => {
                 <Link href="/tickets/new" className={buttonVariants({variant: "default"})}>New Ticket</Link>
                 <StatusFilter/>
             </div>
-            <DataTable tickets={tickets}/>
+            <DataTable tickets={tickets} searchParams={searchParams} />
             <Pagination itemCount={ticketCount} pageSize={pageSize} currentPage={page}/>
         </div>
     )
