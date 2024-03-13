@@ -31,7 +31,7 @@ const TicketForm = ({ticket} : Props) => {
     const form = useForm<TicketFormData>({
         resolver: zodResolver(ticketSchema)
     })
-    
+
     async function onSubmit(values: z.infer<typeof ticketSchema>) {
         try {
             console.log(JSON.stringify(values))
@@ -52,7 +52,7 @@ const TicketForm = ({ticket} : Props) => {
             console.log(error);
             setError("Unknown Error occured");
             setIsSubmitting(false);
-        } 
+        }
         console.log(values)
     }
 
@@ -60,10 +60,10 @@ const TicketForm = ({ticket} : Props) => {
     <div className="rounded-md border w-full p-4 ">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 w-full'>
-            <FormField 
-                control={form.control} 
+            <FormField
+                control={form.control}
                 defaultValue={ticket?.title}
-                name="title" 
+                name="title"
                 render={({field}) => (
                 <FormItem>
                     <FormLabel>Ticket Title</FormLabel>
@@ -72,10 +72,10 @@ const TicketForm = ({ticket} : Props) => {
                     </FormControl>
                 </FormItem>
             )}/>
-            <Controller 
-                name="description" 
+            <Controller
+                name="description"
                 defaultValue={ticket?.description}
-                control={form.control} 
+                control={form.control}
                 render={({field}) => (
                     <SimpleMDE placeholder='Description' {...field} />
                 )} />
@@ -123,6 +123,7 @@ const TicketForm = ({ticket} : Props) => {
             </Button>
         </form>
       </Form>
+        <p className="text-destructive">{error}</p>
     </div>
   )
 }
