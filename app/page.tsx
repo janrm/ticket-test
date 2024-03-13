@@ -17,7 +17,6 @@ const Dashboard = async () => {
         include: {
             assignedToUser: true
         }
-
     })
 
     const groupTicket = await prisma.ticket.groupBy(
